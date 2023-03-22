@@ -59,5 +59,5 @@ USER runner
 WORKDIR /home/runner/
 COPY ./post-hook.sh .
 ADD ./actions-runner-linux-x64-2.303.0.tar.gz .
-RUN ./config.sh --url https://github.com/hyperledger/solang --unattended --token $TOKEN --ephemeral --name $RUNNERNAME --disableupdate --labels ubuntu-latest
+RUN ./config.sh --url https://github.com/hyperledger/solang --unattended --token $TOKEN --ephemeral --name $RUNNERNAME --disableupdate --labels ubuntu-latest --replace
 
