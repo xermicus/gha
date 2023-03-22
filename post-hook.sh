@@ -1,3 +1,3 @@
 #!/bin/bash
 
-shutdown now
+sudo shutdown now

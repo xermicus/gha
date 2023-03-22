@@ -51,13 +51,27 @@ RUN echo "root:$ROOTPW" | chpasswd
 COPY ./runner.service /etc/systemd/system/runner.service
 RUN systemctl enable runner.service
 
-# Install GHA runner
+# Networking
+COPY ./resolved.conf /etc/systemd/resolved.conf
+COPY ./fcnet-setup.sh /usr/local/bin/fcnet-setup.sh
+COPY ./fcnet.service /etc/systemd/system/fcnet.service
+RUN chmod +x /usr/local/bin/fcnet-setup.sh && \
+	systemctl enable fcnet.service && \
+	systemctl enable systemd-resolved
+
+
+# Setup runner user
 RUN groupadd user && \
-	useradd -r -m -d /home/runner -s /bin/bash -g user -G sudo -u 1001 runner && \
+	useradd -m -d /home/runner -s /bin/bash -g user -G sudo runner && \
 	echo "runner:runner" | chpasswd
-USER runner
+
 WORKDIR /home/runner/
 COPY ./post-hook.sh .
+RUN chmod +x post-hook.sh && \
+	chown runner:user post-hook.sh
+
+# Install GHA runner
+USER runner
 ADD ./actions-runner-linux-x64-2.303.0.tar.gz .
 RUN ./config.sh --url https://github.com/hyperledger/solang --unattended --token $TOKEN --ephemeral --name $RUNNERNAME --disableupdate --labels ubuntu-latest --replace
 

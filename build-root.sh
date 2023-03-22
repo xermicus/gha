@@ -13,6 +13,6 @@ mkdir -p $MOUNTDIR
 qemu-img create -f raw $IMAGE $IMAGESIZE
 mkfs.ext4 $IMAGE
 sudo mount $IMAGE $MOUNTDIR
-sudo docker cp $CONTAINER_ID:/ $MOUNTDIR
+sudo docker cp -a $CONTAINER_ID:/ $MOUNTDIR
 sudo umount $MOUNTDIR
 
