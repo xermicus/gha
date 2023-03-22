@@ -3,14 +3,15 @@ Description=GitHub Actions Runner
 After=network.target
 
 [Service]
-ExecStart=/home/runner/rurun.sh
+ExecStart=/home/runner/pickup.sh
 User=runner
 WorkingDirectory=/home/runner/
 KillMode=control-group
 KillSignal=SIGTERM
 TimeoutStopSec=5min
 Restart=never
-Environment="ACTIONS_RUNNER_HOOK_JOB_COMPLETED=/home/runner/post-hook.sh" "PATH=/home/runner/.cargo/bin:/usr/bin"
+#Environment="ACTIONS_RUNNER_HOOK_JOB_COMPLETED=/home/runner/post-hook.sh" "PATH=/home/runner/.cargo/bin:/usr/bin"
+Environment="PATH=/home/runner/.cargo/bin:/usr/bin"
 
 [Install]
 WantedBy=multi-user.target

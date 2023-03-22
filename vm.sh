@@ -12,15 +12,15 @@ sudo ip link set dev "$TAP_DEV" up
 sudo sh -c "echo 1 > /proc/sys/net/ipv4/ip_forward"
 
 # Set up microVM internet access
-sudo iptables -t nat -D POSTROUTING -o wlp3s0 -j MASQUERADE || true
+sudo iptables -t nat -D POSTROUTING -o $1 -j MASQUERADE || true
 sudo iptables -D FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT \
     || true
-sudo iptables -D FORWARD -i tap0 -o wlp3s0 -j ACCEPT || true
-sudo iptables -t nat -A POSTROUTING -o wlp3s0 -j MASQUERADE
+sudo iptables -D FORWARD -i tap0 -o $1 -j ACCEPT || true
+sudo iptables -t nat -A POSTROUTING -o $1 -j MASQUERADE
 sudo iptables -I FORWARD 1 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
-sudo iptables -I FORWARD 1 -i tap0 -o wlp3s0 -j ACCEPT
+sudo iptables -I FORWARD 1 -i tap0 -o $1 -j ACCEPT
 
-API_SOCKET="./firecracker.socket"
+API_SOCKET="/tmp/firecracker.socket"
 LOGFILE="./firecracker.log"
 
 # Create log file

@@ -1,3 +1,3 @@
 #!/bin/bash
 
-sudo shutdown now
+echo -n "runner" | sudo reboot

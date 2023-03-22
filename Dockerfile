@@ -23,7 +23,8 @@ RUN apt update && apt install -y \
 		systemd \
 		sudo \
 		bash \
-		udev
+		udev \
+		parallel
 
 # Install and enable docker
 RUN mkdir -m 0755 -p /etc/apt/keyrings && \
@@ -34,7 +35,8 @@ RUN mkdir -m 0755 -p /etc/apt/keyrings && \
 	apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin && \
 	apt clean && \
 	rm -rf /var/lib/apt/lists/* && \
-	systemctl enable docker
+	systemctl enable docker && \
+	update-alternatives --set iptables /usr/sbin/iptables-legacy
 
 # Create the following files, but unset them
 RUN echo "" > /etc/machine-id && echo "" > /var/lib/dbus/machine-id
@@ -59,19 +61,22 @@ RUN chmod +x /usr/local/bin/fcnet-setup.sh && \
 	systemctl enable fcnet.service && \
 	systemctl enable systemd-resolved
 
-
 # Setup runner user
 RUN groupadd user && \
-	useradd -m -d /home/runner -s /bin/bash -g user -G sudo runner && \
+	useradd -m -d /home/runner -s /bin/bash -g user -G sudo,docker runner && \
 	echo "runner:runner" | chpasswd
 
-WORKDIR /home/runner/
+WORKDIR /home/runner
 COPY ./post-hook.sh .
-RUN chmod +x post-hook.sh && \
-	chown runner:user post-hook.sh
+COPY ./pickup.sh .
+ADD ./actions-runner-linux-x64-2.303.0.tar.gz .
+RUN chmod +x ./post-hook.sh && \
+	chmod +x ./pickup.sh && \
+	chown -R runner:user /home/runner
 
 # Install GHA runner
 USER runner
-ADD ./actions-runner-linux-x64-2.303.0.tar.gz .
-RUN ./config.sh --url https://github.com/hyperledger/solang --unattended --token $TOKEN --ephemeral --name $RUNNERNAME --disableupdate --labels ubuntu-latest --replace
+RUN ./config.sh --url https://github.com/hyperledger/solang --unattended --token $TOKEN --name $RUNNERNAME --disableupdate --labels ubuntu-latest --replace
+#RUN chown -R runner:user /home/runner
+
 
