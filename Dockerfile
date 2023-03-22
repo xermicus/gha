@@ -24,7 +24,9 @@ RUN apt update && apt install -y \
 		sudo \
 		bash \
 		udev \
-		parallel
+		parallel \
+		xvfb libnss3-dev libgdk-pixbuf2.0-dev libgtk-3-dev libxss-dev libasound2 \
+		npm
 
 # Install and enable docker
 RUN mkdir -m 0755 -p /etc/apt/keyrings && \
@@ -76,7 +78,7 @@ RUN chmod +x ./post-hook.sh && \
 
 # Install GHA runner
 USER runner
-RUN ./config.sh --url https://github.com/hyperledger/solang --unattended --token $TOKEN --name $RUNNERNAME --disableupdate --labels ubuntu-latest --replace
+RUN ./config.sh --url https://github.com/hyperledger/solang --unattended --token $TOKEN --name $RUNNERNAME --disableupdate --labels ubuntu-latest,microvm --replace
 #RUN chown -R runner:user /home/runner
 
 

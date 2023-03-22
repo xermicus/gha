@@ -18,7 +18,17 @@ mkdir -p $MOUNTDIR
 qemu-img create -f raw $IMAGE $IMAGESIZE
 mkfs.ext4 $IMAGE
 sudo mount $IMAGE $MOUNTDIR
-# sudo docker cp -a $CONTAINER_ID:/ $MOUNTDIR
+
+# docker cp -a is apparently broken
+# https://github.com/moby/moby/issues/41727
 sudo docker cp $CONTAINER_ID:/ - | sudo tar xf /dev/stdin -C $MOUNTDIR
+
+# squashfs
+sudo mkdir -p $MOUNTDIR/overlay/root $MOUNTDIR/overlay/work $MOUNTDIR/mnt $MOUNTDIR/rom
+sudo cp overlay-init $MOUNTDIR/sbin/overlay-init
+sudo mksquashfs $MOUNTDIR rootfs.img -noappend
+
+
+
 sudo umount $MOUNTDIR
 

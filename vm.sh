@@ -37,7 +37,8 @@ curl -X PUT --unix-socket "${API_SOCKET}" \
     "http://localhost/logger"
 
 KERNEL="./vmlinux.bin"
-KERNEL_BOOT_ARGS="console=ttyS0 reboot=k panic=1 pci=off"
+#KERNEL_BOOT_ARGS="console=ttyS0 reboot=k panic=1 pci=off"
+KERNEL_BOOT_ARGS="console=ttyS0 reboot=k panic=1 pci=off overlay_root=ram init=/sbin/overlay-init"
 
 ARCH=$(uname -m)
 
@@ -53,7 +54,8 @@ curl -X PUT --unix-socket "${API_SOCKET}" \
     }" \
     "http://localhost/boot-source"
 
-ROOTFS="./ubuntu.ext4"
+#ROOTFS="./ubuntu.ext4"
+ROOTFS="./rootfs.img"
 
 # Set rootfs
 curl -X PUT --unix-socket "${API_SOCKET}" \
@@ -61,7 +63,10 @@ curl -X PUT --unix-socket "${API_SOCKET}" \
         \"drive_id\": \"rootfs\",
         \"path_on_host\": \"${ROOTFS}\",
         \"is_root_device\": true,
-        \"is_read_only\": false
+        \"is_read_only\": true,
+        \"partuuid\": null,
+        \"cache_type\": \"Unsafe\",
+        \"rate_limiter\": null
     }" \
     "http://localhost/drives/rootfs"
 
