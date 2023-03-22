@@ -1,3 +1,3 @@
 #!/bin/bash
 
-echo -n "runner" | sudo reboot
+echo -n "runner" | sudo -S reboot
