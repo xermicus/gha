@@ -3,10 +3,10 @@ set -e
 
 if [[ $# = 0 ]] ;
 then
-	echo "Usage: run.sh UPLINK_DEV DATA_DIR VM_NO"
+	echo "Usage: run.sh UPLINK_DEV DATA_DIR BASE_DIR VM_NO"
 	exit 1
 fi
-BASE_DIR=$2/$3/root
+BASE_DIR=$3/$4/root
 
 # Network setup is idempotent
 
@@ -35,8 +35,8 @@ iptables -I FORWARD 1 -i tap0 -o $1 -j ACCEPT
 # Clean state
 rm -rf $BASE_DIR
 
-for n in $(seq 1 $3);
+for n in $(seq 1 $4);
 do
-	$2/microvm.sh $BASE_DIR $n &
+	$3/microvm.sh $2 $BASE_DIR $n &
 done
 
