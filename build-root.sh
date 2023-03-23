@@ -22,13 +22,12 @@ sudo mount $IMAGE $MOUNTDIR
 # docker cp -a is apparently broken
 # https://github.com/moby/moby/issues/41727
 sudo docker cp $CONTAINER_ID:/ - | sudo tar xf /dev/stdin -C $MOUNTDIR
+sudo cp ./resolv.conf $MOUNTDIR/etc/resolv.conf
 
 # squashfs
 sudo mkdir -p $MOUNTDIR/overlay/root $MOUNTDIR/overlay/work $MOUNTDIR/mnt $MOUNTDIR/rom
 sudo cp overlay-init $MOUNTDIR/sbin/overlay-init
 sudo mksquashfs $MOUNTDIR rootfs.img -noappend
-
-
 
 sudo umount $MOUNTDIR
 

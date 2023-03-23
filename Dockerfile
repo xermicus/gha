@@ -64,14 +64,10 @@ COPY ./runner.service /etc/systemd/system/runner.service
 RUN systemctl enable runner.service
 
 # Networking
-RUN echo "nameserver 1.1.1.1" > /etc/resolv.conf
-COPY ./resolved.conf /etc/systemd/resolved.conf
 COPY ./fcnet-setup.sh /usr/local/bin/fcnet-setup.sh
 COPY ./fcnet.service /etc/systemd/system/fcnet.service
 RUN chmod +x /usr/local/bin/fcnet-setup.sh && \
-	systemctl enable fcnet.service && \
-	systemctl enable systemd-resolved
-RUN echo "nameserver 1.1.1.1" > /etc/resolv.conf
+	systemctl enable fcnet.service 
 
 # Setup runner user
 RUN groupadd user && \
