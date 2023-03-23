@@ -1,6 +1,13 @@
 #!/bin/bash
 set -e
 
+if [[ $# = 0 ]] ;
+then
+	echo "Usage: run.sh UPLINK_DEV DATA_DIR VM_NO"
+	exit 1
+fi
+BASE_DIR=$2/$3/root
+
 # Network setup is idempotent
 
 TAP_DEV="tap0"
@@ -28,8 +35,8 @@ iptables -I FORWARD 1 -i tap0 -o $1 -j ACCEPT
 # Clean state
 rm -rf $BASE_DIR
 
-for n in $(seq 1 $2);
+for n in $(seq 1 $3);
 do
-	/root/firecracker/microvm.sh $BASE_DIR $n &
+	$2/microvm.sh $BASE_DIR $n &
 done
 

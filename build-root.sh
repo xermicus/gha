@@ -8,7 +8,7 @@ set -e
 # wget https://s3.amazonaws.com/spec.ccfc.min/img/quickstart_guide/${ARCH}/kernels/vmlinux.bin
 
 
-IMG_ID=$(sudo docker build  --build-arg TOKEN=$1 --build-arg ROOTPW=$2 --build-arg RUNNERNAME=cyrill-microvm -q .)
+IMG_ID=$(sudo docker build  --build-arg TOKEN=$1 --build-arg ROOTPW=$2 --build-arg RUNNERNAME=$3 -q .)
 CONTAINER_ID=$(sudo docker run -td $IMG_ID /bin/bash true)
 MOUNTDIR=/tmp/mnt
 IMAGE=ubuntu.ext4
