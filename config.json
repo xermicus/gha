@@ -1,0 +1,29 @@
+{
+	"boot-source": {
+		"kernel_image_path": "vmlinux.bin",
+		"boot_args": "ro console=ttyS0 noapic reboot=k panic=1 pci=off overlay_root=ram init=/sbin/overlay-init"
+	},
+	"drives": [
+		{
+			"drive_id": "rootfs",
+			"path_on_host": "rootfs.img",
+			"is_root_device": true,
+			"is_read_only": true,
+			"partuuid": null,
+			"cache_type": "Unsafe",
+			"rate_limiter": null
+		}
+	],
+	"network-interfaces": [
+		{
+			"iface_id": "net1",
+			"guest_mac": "06:00:AC:10:00:02",
+			"host_dev_name": "tap0"
+		}
+	],
+	"machine-config": {
+		"vcpu_count": 8,
+		"mem_size_mib": 8192
+	}
+}
+
