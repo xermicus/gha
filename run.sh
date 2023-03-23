@@ -17,7 +17,7 @@ for n in $(seq 1 $4);
 do
 	TAP_DEV="tap$n"
 	TAP_IP="172.16.$n.1"
-	MASK_SHORT="/28"
+	MASK_SHORT="/30"
 	
 	# Setup network interface
 	ip link del "$TAP_DEV" 2> /dev/null || true

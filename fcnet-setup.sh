@@ -18,10 +18,10 @@ main() {
             | grep -Po "(?<=06:00:)([0-9a-f]{2}:?){4}"
         )
         ip=$(printf "%d.%d.%d.%d" $(echo "0x${mac_ip}" | sed "s/:/ 0x/g"))
-        ip addr add "$ip/28" dev $dev
+        ip addr add "$ip/30" dev $dev
         ip link set $dev up
 		# Add route?
-		ip route add default via 172.16.0.1
+		ip route add default via "$(echo $ip | grep -Po '\d+\.\d+\.\d').1"
     done
 }
 main

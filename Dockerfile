@@ -64,12 +64,14 @@ COPY ./runner.service /etc/systemd/system/runner.service
 RUN systemctl enable runner.service
 
 # Networking
+RUN echo "nameserver 1.1.1.1" > /etc/resolv.conf
 COPY ./resolved.conf /etc/systemd/resolved.conf
 COPY ./fcnet-setup.sh /usr/local/bin/fcnet-setup.sh
 COPY ./fcnet.service /etc/systemd/system/fcnet.service
 RUN chmod +x /usr/local/bin/fcnet-setup.sh && \
 	systemctl enable fcnet.service && \
 	systemctl enable systemd-resolved
+RUN echo "nameserver 1.1.1.1" > /etc/resolv.conf
 
 # Setup runner user
 RUN groupadd user && \
@@ -87,6 +89,4 @@ RUN chmod +x ./post-hook.sh && \
 # Install GHA runner
 USER runner
 RUN ./config.sh --url https://github.com/hyperledger/solang --unattended --token $TOKEN --name $RUNNERNAME --disableupdate --labels ubuntu-latest,microvm --replace
-#RUN chown -R runner:user /home/runner
-
 
