@@ -12,6 +12,7 @@ DATA_DIR=$1
 mkdir -p $BASE_DIR
 cp $DATA_DIR/rootfs$3.img $BASE_DIR/rootfs.img
 cp $DATA_DIR/config.json $DATA_DIR/vmlinux.bin $BASE_DIR/
+sed -i "s/00:02/0${3}:02/g" $BASE_DIR/config.json
 sed -i "s/tap0/tap${3}/g" $BASE_DIR/config.json
 chown -R jailer:jailer $BASE_DIR
 
