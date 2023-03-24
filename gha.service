@@ -1,0 +1,18 @@
+Description=GitHub Actions Runner VM Host
+After=network.target
+
+[Service]
+ExecStart=/root/gha/run.sh enp0s31f6 /root/gha /srv/jailer/firecracker 4
+User=root
+WorkingDirectory=/root/gha/
+KillUserProcesses=no
+KillExcludeUsers=root
+KillMode=control-group
+KillSignal=SIGTERM
+TimeoutStopSec=5min
+Type=forking
+RemainAfterExit=yes
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

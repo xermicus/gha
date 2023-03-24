@@ -11,7 +11,7 @@ set -e
 IMG_ID=$(sudo docker build  --build-arg TOKEN=$1 --build-arg ROOTPW=$2 --build-arg RUNNERNAME=$3 -q .)
 CONTAINER_ID=$(sudo docker run -td $IMG_ID /bin/bash true)
 MOUNTDIR=/tmp/mnt/$3
-IMAGE=ubuntu.ext4
+IMAGE=ubuntu$3.ext4
 IMAGESIZE=16384M
 
 mkdir -p $MOUNTDIR
@@ -27,7 +27,7 @@ sudo cp ./resolv.conf $MOUNTDIR/etc/resolv.conf
 # squashfs
 sudo mkdir -p $MOUNTDIR/overlay/root $MOUNTDIR/overlay/work $MOUNTDIR/mnt $MOUNTDIR/rom
 sudo cp overlay-init $MOUNTDIR/sbin/overlay-init
-sudo mksquashfs $MOUNTDIR rootfs.img -noappend
+sudo mksquashfs $MOUNTDIR $3.img -noappend
 
 sudo umount $MOUNTDIR
 
