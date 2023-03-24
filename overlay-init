@@ -38,7 +38,7 @@ do_overlay() {
     local overlay_dir="/overlay"
     if [ "$overlay_root" = ram ] ||
            [ -z "$overlay_root" ]; then
-        /bin/mount -t tmpfs -o noatime,mode=0755 tmpfs /overlay
+        /bin/mount -t tmpfs -o noatime,mode=0755,size=100% tmpfs /overlay
     else
         /bin/mount -t ext4 "/dev/$overlay_root" /overlay
     fi

@@ -1,7 +1,7 @@
 {
 	"boot-source": {
 		"kernel_image_path": "vmlinux.bin",
-		"boot_args": "ro console=ttyS0 noapic reboot=k panic=1 pci=off overlay_root=ram init=/sbin/overlay-init"
+		"boot_args": "ro noapic reboot=k panic=1 pci=off overlay_root=ram init=/sbin/overlay-init"
 	},
 	"drives": [
 		{
@@ -23,7 +23,7 @@
 	],
 	"machine-config": {
 		"vcpu_count": 8,
-		"mem_size_mib": 8192
+		"mem_size_mib": 16384
 	}
 }
 

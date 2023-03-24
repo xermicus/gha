@@ -10,7 +10,7 @@ set -e
 
 IMG_ID=$(sudo docker build  --build-arg TOKEN=$1 --build-arg ROOTPW=$2 --build-arg RUNNERNAME=$3 -q .)
 CONTAINER_ID=$(sudo docker run -td $IMG_ID /bin/bash true)
-MOUNTDIR=/tmp/mnt
+MOUNTDIR=/tmp/mnt/$3
 IMAGE=ubuntu.ext4
 IMAGESIZE=16384M
 
