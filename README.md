@@ -6,8 +6,8 @@ Scripts for running GHA runners in ephemeral firecracker micro VMs. Ephemeral VM
 - After each job run, the VM simply reboots, which will halt it's execution
 - `systemd` will take care of restarting VMs immediatly, boot time is less than one second
 - Because VMs disk drive is a `tmpfs` residing entirely in RAM, no state is persistet between runs. Alternatively, e.g. if not enough memory is available on the VM host, this could also be made a COW which is thrown away after each run instead, with minor changes.
-
-One VM host can run multiple microVMs at the same time. However each runner needs it's own GHA runner token.
+- Isolation from the host is done with `jailer`.
+- One VM host can run multiple microVMs at the same time. However each runner needs it's own GHA runner token.
 
 # Requirements
 
@@ -15,6 +15,7 @@ One VM host can run multiple microVMs at the same time. However each runner need
 - `qemu-img`
 - squashfs-tools
 - `sudo`
+- Unpriviledged user for jailer
 
 # Setup briefly
 
