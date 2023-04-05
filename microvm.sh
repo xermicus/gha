@@ -8,7 +8,6 @@ fi
 
 while :
 do
-	rm -rf $BASE_DIR/dev || true
-	rm -rf $BASE_DIR/run || true
+	rm -rf $1/dev $1/run || true
 	jailer --id $2 --uid 1000 --gid 1000 --exec-file /usr/bin/firecracker -- --config-file config.json --no-api
 done

@@ -1,3 +1,14 @@
+Scripts for running GHA runners in ephemeral firecracker micro VMs. Ephemeral VMs are preferable because there is no cleanup to be done after a job run, hence there is also no risk of accidentially leaking data between job runs.
+
+# How it works
+
+- The VM image is built from an ordinary docker file
+- After each job run, the VM simply reboots, which will halt it's execution
+- `systemd` will take care of restarting VMs immediatly, boot time is less than one second
+- Because VMs disk drive is a `tmpfs` residing entirely in RAM, no state is persistet between runs. Alternatively, e.g. if not enough memory is available on the VM host, this could also be made a COW which is thrown away after each run instead, with minor changes.
+
+One VM host can run multiple microVMs at the same time. However each runner needs it's own GHA runner token.
+
 # Requirements
 
 - `docker`
@@ -11,7 +22,7 @@
 2. Obtain a firecracker supported kernel (5.10) and save it as `vmlinux.bin`
 3. Build the root filesystem: `./build-root.sh token root_passwd runner-name-X && vm rootfs.img rootfsX.img` (replace X with a number)
 4. Repeat the previous step for as many runners you want
-5. Add the systemd service
+5. Enable the systemd service
 
 # Issues
 These would be nice to fix for good but I ENOTIME:

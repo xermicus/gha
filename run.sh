@@ -36,10 +36,10 @@ do
 	iptables -I FORWARD 1 -i $TAP_DEV -o $1 -j ACCEPT
 
 	mkdir -p $BASE_DIR
-	cp $DATA_DIR/rootfs$3.img $BASE_DIR/rootfs.img
+	cp $DATA_DIR/rootfs$n.img $BASE_DIR/rootfs.img
 	cp $DATA_DIR/config.json $DATA_DIR/vmlinux.bin $BASE_DIR/
-	sed -i "s/00:02/0${3}:02/g" $BASE_DIR/config.json
-	sed -i "s/tap0/tap${3}/g" $BASE_DIR/config.json
+	sed -i "s/00:02/0${n}:02/g" $BASE_DIR/config.json
+	sed -i "s/tap0/tap${n}/g" $BASE_DIR/config.json
 	chown -R jailer:jailer $BASE_DIR
 
 	$2/microvm.sh $BASE_DIR $n &
