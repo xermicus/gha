@@ -23,7 +23,9 @@ Scripts for running GHA runners in ephemeral firecracker micro VMs. Ephemeral VM
 2. Obtain a firecracker supported kernel (5.10) and save it as `vmlinux.bin`
 3. Build the root filesystem: `./build-root.sh token root_passwd runner-name-X && vm rootfs.img rootfsX.img` (replace X with a number)
 4. Repeat the previous step for as many runners you want
-5. Enable the systemd service
+5. Change `gha.service` to use your network interface (default `enp0s3`), data and script location (default `/root/gha`) and workdir (default `/srv/jailer/firecracker`) 
+6. Change `config.json` to desired VM configuration. Do not change `network-interfaces` sections or it will break the network setup with `fcnet.service`. Do not change the `drives` section or it will break automatic setup `gha.service`.
+7. Enable the systemd services `gha.service` and `fcnet.service`
 
 # Issues
 These would be nice to fix for good but I ENOTIME:
